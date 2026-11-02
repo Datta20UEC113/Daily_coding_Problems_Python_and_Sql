@@ -1,113 +1,233 @@
-<h2><a href="https://leetcode.com/problems/students-and-examinations">Students and Examinations</a></h2> <img src='https://img.shields.io/badge/Difficulty-Easy-brightgreen' alt='Difficulty: Easy' /><hr><p>Table: <code>Students</code></p>
+# 1280. Students and Examinations
 
-<pre>
-+---------------+---------+
-| Column Name   | Type    |
-+---------------+---------+
-| student_id    | int     |
-| student_name  | varchar |
-+---------------+---------+
-student_id is the primary key (column with unique values) for this table.
-Each row of this table contains the ID and the name of one student in the school.
-</pre>
+**Difficulty:** 🟢 Easy  
+**Platform:** [LeetCode](https://leetcode.com/problems/students-and-examinations/)  
+**Topics:** SQL, CROSS JOIN, LEFT JOIN, GROUP BY, COUNT, ORDER BY
 
-<p>&nbsp;</p>
+---
 
-<p>Table: <code>Subjects</code></p>
+## Problem Statement
 
-<pre>
-+--------------+---------+
-| Column Name  | Type    |
-+--------------+---------+
+Write an SQL query to find the number of times each student attended an examination for every subject.
+
+The result must include:
+
+- Every student from the `Students` table.
+- Every subject from the `Subjects` table.
+- The number of times each student attended each subject's examination.
+- Students who did not attend an examination, with `attended_exams = 0`.
+
+Return the result ordered by `student_id` and `subject_name`.
+
+## Database Schema
+
+### Students
+
+| Column | Type |
+|---|---|
+| student_id | int |
+| student_name | varchar |
+
+**Primary Key:** `student_id`
+
+### Subjects
+
+| Column | Type |
+|---|---|
 | subject_name | varchar |
-+--------------+---------+
-subject_name is the primary key (column with unique values) for this table.
-Each row of this table contains the name of one subject in the school.
-</pre>
 
-<p>&nbsp;</p>
+**Primary Key:** `subject_name`
 
-<p>Table: <code>Examinations</code></p>
+### Examinations
 
-<pre>
-+--------------+---------+
-| Column Name  | Type    |
-+--------------+---------+
-| student_id   | int     |
+| Column | Type |
+|---|---|
+| student_id | int |
 | subject_name | varchar |
-+--------------+---------+
-There is no primary key (column with unique values) for this table. It may contain duplicates.
-Each student from the Students table takes every course from the Subjects table.
-Each row of this table indicates that a student with ID student_id attended the exam of subject_name.
-</pre>
 
-<p>&nbsp;</p>
+This table can contain duplicate rows because a student may attend the same subject's examination multiple times.
 
-<p>Write a solution to find the number of times each student attended each exam.</p>
+---
 
-<p>Return the result table ordered by <code>student_id</code> and <code>subject_name</code>.</p>
+## SQL Solution
 
-<p>The result format is in the following example.</p>
+```sql
+SELECT
+    s.student_id,
+    s.student_name,
+    sub.subject_name,
+    COUNT(e.subject_name) AS attended_exams
+FROM Students AS s
+CROSS JOIN Subjects AS sub
+LEFT JOIN Examinations AS e
+    ON s.student_id = e.student_id
+    AND sub.subject_name = e.subject_name
+GROUP BY
+    s.student_id,
+    s.student_name,
+    sub.subject_name
+ORDER BY
+    s.student_id,
+    sub.subject_name;
+```
 
-<p>&nbsp;</p>
-<p><strong class="example">Example 1:</strong></p>
+---
 
-<pre>
-<strong>Input:</strong> 
-Students table:
-+------------+--------------+
-| student_id | student_name |
-+------------+--------------+
-| 1          | Alice        |
-| 2          | Bob          |
-| 13         | John         |
-| 6          | Alex         |
-+------------+--------------+
-Subjects table:
-+--------------+
-| subject_name |
-+--------------+
-| Math         |
-| Physics      |
-| Programming  |
-+--------------+
-Examinations table:
-+------------+--------------+
-| student_id | subject_name |
-+------------+--------------+
-| 1          | Math         |
-| 1          | Physics      |
-| 1          | Programming  |
-| 2          | Programming  |
-| 1          | Physics      |
-| 1          | Math         |
-| 13         | Math         |
-| 13         | Programming  |
-| 13         | Physics      |
-| 2          | Math         |
-| 1          | Math         |
-+------------+--------------+
-<strong>Output:</strong> 
-+------------+--------------+--------------+----------------+
+## Approach: CROSS JOIN + LEFT JOIN
+
+We use both `CROSS JOIN` and `LEFT JOIN` because we need to calculate the number of examinations attended for **every possible student-subject combination**, including combinations where a student did not attend an examination.
+
+### Step 1: Generate all combinations using CROSS JOIN
+
+```sql
+SELECT
+    s.student_id,
+    s.student_name,
+    sub.subject_name
+FROM Students AS s
+CROSS JOIN Subjects AS sub;
+```
+
+A `CROSS JOIN` creates the Cartesian product of two tables.
+
+This means every student is paired with every subject, regardless of whether the student attended an examination.
+
+**Result:**
+
+| student_id | student_name | subject_name |
+|---|---|---|
+| 1 | Alice | Math |
+| 1 | Alice | Physics |
+| 1 | Alice | Programming |
+| 2 | Bob | Math |
+| 2 | Bob | Physics |
+| 2 | Bob | Programming |
+| 6 | Alex | Math |
+| 6 | Alex | Physics |
+| 6 | Alex | Programming |
+| 13 | John | Math |
+| 13 | John | Physics |
+| 13 | John | Programming |
+
+**Important:** If there are 4 students and 3 subjects, the `CROSS JOIN` generates:
+
+4 × 3 = **12 combinations**
+
+This ensures that no student-subject combination is missing.
+
+### Step 2: Match examination records using LEFT JOIN
+
+```sql
+LEFT JOIN Examinations AS e
+    ON s.student_id = e.student_id
+    AND sub.subject_name = e.subject_name
+```
+
+We use a `LEFT JOIN` to preserve every student-subject combination generated by the `CROSS JOIN`.
+
+The join matches records based on two conditions:
+
+1. The student IDs must match.
+2. The subject names must match.
+
+If a student attended a particular subject's examination, the corresponding records are matched.
+
+If a student did not attend that examination, the combination is still preserved, but the examination columns contain `NULL`.
+
+For example, Alex did not attend any examinations. However, all three of Alex's subject combinations remain in the result because of the `LEFT JOIN`.
+
+### Step 3: Count examination attendance
+
+```sql
+COUNT(e.subject_name) AS attended_exams
+```
+
+We use `COUNT(e.subject_name)` to count the number of matching examination records.
+
+**Why not COUNT(*)?**
+
+- `COUNT(*)` counts every row, including rows created by the `LEFT JOIN` that have no matching examination record.
+- `COUNT(e.subject_name)` counts only non-NULL examination subject values.
+
+Therefore, students who did not attend an examination correctly receive a count of `0`.
+
+### Step 4: Group by student and subject
+
+```sql
+GROUP BY
+    s.student_id,
+    s.student_name,
+    sub.subject_name
+```
+
+We group the records by student and subject to calculate the attendance count for each combination.
+
+### Step 5: Sort the output
+
+```sql
+ORDER BY
+    s.student_id,
+    sub.subject_name;
+```
+
+This sorts the results by student ID first and then alphabetically by subject name.
+
+---
+
+## Expected Output
+
 | student_id | student_name | subject_name | attended_exams |
-+------------+--------------+--------------+----------------+
-| 1          | Alice        | Math         | 3              |
-| 1          | Alice        | Physics      | 2              |
-| 1          | Alice        | Programming  | 1              |
-| 2          | Bob          | Math         | 1              |
-| 2          | Bob          | Physics      | 0              |
-| 2          | Bob          | Programming  | 1              |
-| 6          | Alex         | Math         | 0              |
-| 6          | Alex         | Physics      | 0              |
-| 6          | Alex         | Programming  | 0              |
-| 13         | John         | Math         | 1              |
-| 13         | John         | Physics      | 1              |
-| 13         | John         | Programming  | 1              |
-+------------+--------------+--------------+----------------+
-<strong>Explanation:</strong> 
-The result table should contain all students and all subjects.
-Alice attended the Math exam 3 times, the Physics exam 2 times, and the Programming exam 1 time.
-Bob attended the Math exam 1 time, the Programming exam 1 time, and did not attend the Physics exam.
-Alex did not attend any exams.
-John attended the Math exam 1 time, the Physics exam 1 time, and the Programming exam 1 time.
-</pre>
+|---|---|---|---|
+| 1 | Alice | Math | 3 |
+| 1 | Alice | Physics | 2 |
+| 1 | Alice | Programming | 1 |
+| 2 | Bob | Math | 1 |
+| 2 | Bob | Physics | 0 |
+| 2 | Bob | Programming | 1 |
+| 6 | Alex | Math | 0 |
+| 6 | Alex | Physics | 0 |
+| 6 | Alex | Programming | 0 |
+| 13 | John | Math | 1 |
+| 13 | John | Physics | 1 |
+| 13 | John | Programming | 1 |
+
+---
+
+## Key SQL Concepts Learned
+
+| Concept | Purpose |
+|---|---|
+| `CROSS JOIN` | Generates every possible student-subject combination |
+| `LEFT JOIN` | Preserves all combinations even without matching examination records |
+| `COUNT(column)` | Counts only non-NULL values |
+| `GROUP BY` | Groups records to calculate attendance for each student and subject |
+| `ORDER BY` | Sorts the final output |
+
+## Important Takeaway
+
+When an SQL problem requires **every possible combination of two entities, including combinations with zero occurrences**, consider the following pattern:
+
+```sql
+SELECT
+    ...,
+    COUNT(matched_table.column)
+FROM table1
+CROSS JOIN table2
+LEFT JOIN matched_table
+    ON matching_conditions
+GROUP BY ...;
+```
+
+This pattern is useful for:
+
+- Student attendance reports
+- Employee training completion
+- Product sales across stores
+- Customer activity reports
+- Inventory and availability analysis
+
+**Final Understanding:** `CROSS JOIN` generates all possible combinations, `LEFT JOIN` preserves them while matching existing records, and `COUNT(column)` calculates how many matching records exist, including zero.
+
+---
+
+**Problem Link:** [LeetCode 1280 — Students and Examinations](https://leetcode.com/problems/students-and-examinations/)
