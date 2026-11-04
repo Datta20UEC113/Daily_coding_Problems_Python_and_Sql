@@ -1,0 +1,90 @@
+# LeetCode 603 — Consecutive Available Seats
+
+**Difficulty:** Easy  
+**Topic:** SQL, Self Join, DISTINCT  
+**Database:** PostgreSQL  
+**Problem Link:** https://leetcode.com/problems/consecutive-available-seats/
+
+---
+
+## Problem Statement
+
+Several friends at a cinema ticket office want to reserve consecutive available seats.
+
+Write an SQL query to find all seat IDs that belong to a group of at least two consecutive available seats.
+
+Return the results ordered by `seat_id` in ascending order.
+
+### Table: Cinema
+
+| Column Name | Data Type |
+|---|---|
+| seat_id | INT |
+| free | BOOLEAN |
+
+- `seat_id` is the primary key.
+- `free = TRUE` indicates an available seat.
+- `free = FALSE` indicates an occupied seat.
+- Two seats are consecutive when their seat IDs differ by exactly 1.
+
+## Example
+
+**Input: Cinema**
+
+| seat_id | free |
+|---|---|
+| 1 | TRUE |
+| 2 | FALSE |
+| 3 | TRUE |
+| 4 | TRUE |
+| 6 | TRUE |
+
+**Output:**
+
+| seat_id |
+|---|
+| 3 |
+| 4 |
+
+**Explanation:**
+
+Seats 3 and 4 are consecutive and available. Seat 1 has no available adjacent seat. Seat 6 is not consecutive with seat 4 because seat 5 is missing.
+
+## SQL Solution — Self Join
+
+```sql
+SELECT DISTINCT c1.seat_id
+FROM Cinema c1
+JOIN Cinema c2
+    ON ABS(c1.seat_id - c2.seat_id) = 1
+WHERE c1.free = TRUE
+  AND c2.free = TRUE
+ORDER BY c1.seat_id;
+```
+
+## Approach
+
+1. Perform a self join on the `Cinema` table.
+2. Use `ABS(c1.seat_id - c2.seat_id) = 1` to identify adjacent seats.
+3. Check that both seats are available.
+4. Use `DISTINCT` to remove duplicate seat IDs.
+5. Sort the results by `seat_id`.
+
+## Complexity Analysis
+
+- **Time Complexity:** Up to O(n²) for a general nested-loop self join; the actual cost depends on the database execution plan and indexes.
+- **Space Complexity:** Depends on the join, duplicate elimination, and sorting strategies.
+
+## Key Concepts
+
+- Self Join
+- Boolean Conditions
+- `ABS()` Function
+- `DISTINCT`
+- `ORDER BY`
+
+---
+
+**Platform:** LeetCode  
+**Problem Number:** 603  
+**Language:** PostgreSQL
