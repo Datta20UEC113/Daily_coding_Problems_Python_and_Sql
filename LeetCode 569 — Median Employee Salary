@@ -1,0 +1,146 @@
+# LeetCode 569 — Median Employee Salary
+
+**Difficulty:** Hard  
+**Topic:** SQL, Window Functions, CTE  
+**Database:** PostgreSQL  
+**Problem Link:** https://leetcode.com/problems/median-employee-salary/
+
+---
+
+## Problem Statement
+
+Write an SQL query to find the median salary of employees in each company.
+
+The median salary is the middle salary when employees' salaries are arranged in ascending order.
+
+- If a company has an odd number of employees, return the middle employee.
+- If a company has an even number of employees, return both middle employees.
+- Return the employee's `id`, `company`, and `salary`.
+
+### Table: Employee
+
+| Column Name | Data Type |
+|---|---|
+| id | INT |
+| company | VARCHAR |
+| salary | INT |
+
+- `id` is the primary key.
+- Each row represents an employee, their company, and their salary.
+
+## Example
+
+**Input: Employee**
+
+| id | company | salary |
+|---|---|---|
+| 1 | A | 1000 |
+| 2 | A | 2000 |
+| 3 | A | 3000 |
+| 4 | A | 4000 |
+| 5 | A | 5000 |
+| 6 | B | 1000 |
+| 7 | B | 2000 |
+| 8 | B | 3000 |
+| 9 | B | 4000 |
+
+**Output:**
+
+| id | company | salary |
+|---|---|---|
+| 3 | A | 3000 |
+| 7 | B | 2000 |
+| 8 | B | 3000 |
+
+**Explanation:**
+
+Company A has 5 employees, so the third employee has the median salary.
+
+Company B has 4 employees, so the second and third employees are returned.
+
+## SQL Solution — CTE and Window Functions
+
+```sql
+WITH median AS (
+    SELECT
+        id,
+        company,
+        salary,
+        ROW_NUMBER() OVER (
+            PARTITION BY company
+            ORDER BY salary, id
+        ) AS rn,
+        COUNT(*) OVER (
+            PARTITION BY company
+        ) AS total_count
+    FROM Employee
+)
+
+SELECT
+    id,
+    company,
+    salary
+FROM median
+WHERE rn BETWEEN total_count / 2.0
+             AND total_count / 2.0 + 1;
+```
+
+## Approach
+
+**Step 1: Partition employees by company**
+
+Use `PARTITION BY company` to process each company separately.
+
+**Step 2: Assign row numbers**
+
+Use `ROW_NUMBER()` to assign sequential positions to employees sorted by salary.
+
+**Step 3: Count employees**
+
+Use `COUNT(*) OVER (PARTITION BY company)` to determine the total number of employees in each company.
+
+**Step 4: Identify the middle positions**
+
+Use:
+
+```sql
+WHERE rn BETWEEN total_count / 2.0
+             AND total_count / 2.0 + 1
+```
+
+For an odd count of 5:
+
+- Lower bound = 2.5
+- Upper bound = 3.5
+- Selected row = 3
+
+For an even count of 6:
+
+- Lower bound = 3
+- Upper bound = 4
+- Selected rows = 3 and 4
+
+**Step 5: Return employee records**
+
+Return the actual employees at the median positions rather than calculating the average salary.
+
+## Complexity Analysis
+
+- **Time Complexity:** O(n log n) in the typical case due to sorting employees within company partitions.
+- **Space Complexity:** O(n) for window-function processing and intermediate results.
+
+## Key Concepts
+
+- Common Table Expressions (CTEs)
+- `ROW_NUMBER()`
+- `COUNT(*) OVER()`
+- `PARTITION BY`
+- `ORDER BY`
+- Median Calculation
+- Window Functions
+
+---
+
+**Platform:** LeetCode  
+**Problem Number:** 569  
+**Language:** PostgreSQL
