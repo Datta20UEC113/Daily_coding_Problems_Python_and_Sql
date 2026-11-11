@@ -1,96 +1,67 @@
-# Sql
-Daily SQL practice covering basic to advanced concepts, including queries, joins, subqueries, CTEs, window functions, and database fundamentals. Practicing problems from LeetCode, HackerRank, GeeksforGeeks, and other platforms while documenting daily learnings and solutions.
+# SQL Master — Practice & Problem Solving
 
-# SQL Master 🚀
+A structured collection of SQL exercises, worked solutions, and learning notes covering SQL fundamentals through advanced querying. This repository documents hands-on practice with an emphasis on **clear reasoning, readable code, and reproducible examples**.
 
-Welcome to **SQL Master** — my daily SQL learning and problem-solving repository. This repository documents my journey from SQL fundamentals to advanced concepts through hands-on practice, coding challenges, and practical examples.
+**Focus areas:** SQL · PostgreSQL · Joins · Subqueries · CTEs · Window Functions · Data Analysis
 
-## 🎯 Objectives
+## Start here
 
-- Build a strong foundation in SQL and relational databases.
-- Master SQL queries for data retrieval, manipulation, and analysis.
-- Practice SQL problems from coding platforms.
-- Understand advanced SQL concepts used in data analytics, data engineering, and data science.
-- Maintain a consistent record of daily learning and progress.
+| Resource | Description |
+|---|---|
+| [SQL Practice](SQL_Practice/) | Organized, self-contained problem folders |
+| [Problem Index](SQL_Practice/README.md) | Problem IDs, difficulty, SQL concepts, and direct solution links |
+| [LeetCode SQL](https://leetcode.com/problemset/database/) | SQL coding challenge platform |
 
-## 📚 Topics Covered
+## Featured solutions
 
-- SQL Fundamentals and Database Concepts
-- Data Types and Constraints
-- `SELECT`, `WHERE`, `ORDER BY`, and `DISTINCT`
-- Aggregate Functions, `GROUP BY`, and `HAVING`
-- SQL Joins
-- Subqueries and Nested Queries
-- Common Table Expressions (CTEs)
-- Window Functions
-- `CASE` Statements and Conditional Logic
-- String, Date, and Mathematical Functions
-- Set Operators
-- Views, Indexes, and Stored Procedures
-- Transactions and Database Normalization
-- Query Optimization and Performance
-- Advanced SQL Problem Solving
+| Problem | Source | Concepts | Solution |
+|---|---|---|---|
+| Ad-Free Sessions | [LeetCode 1809](https://leetcode.com/problems/ad-free-sessions/) | Correlated subquery, `NOT EXISTS`, `BETWEEN` | [View](SQL_Practice/1809_Ad_Free_Sessions/) |
+| Delete Duplicate Emails | [LeetCode 196](https://leetcode.com/problems/delete-duplicate-emails/) | `DELETE`, self-join, `USING` | [View](SQL_Practice/196_Delete_Duplicate_Emails/) |
+| Product Price Adjustment | Custom exercise | `CASE WHEN`, percentage calculations | [View](SQL_Practice/Product_Price_Adjustment/) |
 
-## 📁 Repository Structure
+## Repository organization
 
 ```text
-SQL-Master/
-│
+.
 ├── README.md
-│
-├── 2026-10-25/
+├── SQL_Practice/
 │   ├── README.md
-│   ├── problem_1.sql
-│   └── problem_2.sql
-│
-├── 2026-10-26/
-│   ├── README.md
-│   ├── problem_1.sql
-│   └── problem_2.sql
-│
-└── ...
+│   ├── 1809_Ad_Free_Sessions/
+│   │   ├── README.md
+│   │   └── solution.sql
+│   ├── 196_Delete_Duplicate_Emails/
+│   │   ├── README.md
+│   │   └── solution.sql
+│   └── Product_Price_Adjustment/
+│       ├── README.md
+│       └── solution.sql
+└── [other existing practice files and folders]
 ```
 
-Each date-named folder contains the SQL problems solved on that day, along with a README documenting the topics covered, problem statements, approaches, and key learnings.
+Each organized problem folder contains a **README** with the question, example tables, expected output, explanation, and key takeaways, plus a **solution.sql** file with the final query.
 
-## 🧩 Practice Platforms
+## Topics practiced
 
-- [LeetCode](https://leetcode.com/)
-- [HackerRank](https://www.hackerrank.com/)
-- [GeeksforGeeks](https://www.geeksforgeeks.org/)
-- [SQLBolt](https://sqlbolt.com/)
-- [CodingNinjas](https://www.naukri.com/code360/problem-of-the-day)
+- **Core SQL:** filtering, sorting, conditional expressions, aggregates, grouping
+- **Relational queries:** inner/outer joins, self-joins, anti-joins
+- **Subqueries:** correlated subqueries, `EXISTS` and `NOT EXISTS`
+- **Data manipulation:** `DELETE`, deduplication
+- **Advanced learning goals:** CTEs, window functions, query optimization
 
-## 📅 Daily Learning Log
+## How to use
 
-I aim to practice SQL consistently and document my progress every day.
+1. Open the [problem index](SQL_Practice/README.md).
+2. Select a problem and read its `README.md` for the requirements and worked example.
+3. Review `solution.sql` to see the final implementation.
+4. Compare alternative query strategies and practice adapting them to other datasets.
 
-For each problem, I try to record:
-- **Problem:** The question or challenge.
-- **Concepts:** SQL topics involved.
-- **Approach:** The logic behind the solution.
-- **Solution:** The SQL query.
-- **Learning:** What I understood or improved.
+**SQL dialect:** The featured solutions use PostgreSQL syntax. SQL syntax can differ between PostgreSQL, MySQL, and SQL Server, especially for data-modification statements.
 
-## 💡 Why This Repository?
+## Practice sources
 
-This repository serves as my SQL learning journal, revision guide, and portfolio of practical problem-solving skills. It reflects my progress toward becoming proficient in SQL for real-world data-related roles.
-
-## 📈 Progress
-
-- [ ] SQL Fundamentals
-- [ ] Filtering and Sorting
-- [ ] Aggregate Functions and Grouping
-- [ ] Joins and Subqueries
-- [ ] CTEs and Set Operators
-- [ ] Window Functions
-- [ ] Advanced SQL
-- [ ] Query Optimization
-- [ ] Real-World SQL Projects
-
-*This checklist will be updated as I progress through each topic.*
+[LeetCode](https://leetcode.com/) · [HackerRank](https://www.hackerrank.com/) · [GeeksforGeeks](https://www.geeksforgeeks.org/) · [SQLBolt](https://sqlbolt.com/) · [Code360](https://www.naukri.com/code360/)
 
 ---
 
-**Consistency over perfection — one SQL problem at a time!** 💻
-
+*Learning SQL through consistent practice, clear documentation, and problem solving.*
