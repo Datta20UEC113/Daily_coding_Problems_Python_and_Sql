@@ -16,6 +16,8 @@ A navigable index of documented SQL exercises. Each problem has a standalone exp
 | Problem | Concepts | Files |
 |---|---|---|
 | Product Price Adjustment | `CASE WHEN`, percentage calculations | [README](Product_Price_Adjustment/README.md) · [SQL](Product_Price_Adjustment/solution.sql) |
+| Shop Items Above 25 | `WHERE`, `UNION`, duplicate removal | [README](Shop_Items_Above_25/README.md) · [SQL](Shop_Items_Above_25/solution.sql) |
+| Daily and Cumulative Sales by Shipper | Joins, CTE, `GROUP BY`, window `SUM`, `ROUND` | [README](Shipper_Daily_Cumulative_Sales/README.md) · [SQL](Shipper_Daily_Cumulative_Sales/solution.sql) |
 
 ## Folder convention
 
