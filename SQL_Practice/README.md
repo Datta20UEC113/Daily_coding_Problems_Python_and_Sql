@@ -2,7 +2,7 @@
 
 [← Back to repository overview](../README.md)
 
-A navigable index of documented SQL exercises. Each problem has a standalone explanation and an executable `solution.sql`.
+A navigable index of documented SQL exercises. Each problem has a standalone explanation and an executable SQL file.
 
 ## LeetCode problems
 
@@ -18,6 +18,16 @@ A navigable index of documented SQL exercises. Each problem has a standalone exp
 | Product Price Adjustment | `CASE WHEN`, percentage calculations | [README](Product_Price_Adjustment/README.md) · [SQL](Product_Price_Adjustment/solution.sql) |
 | Shop Items Above 25 | `WHERE`, `UNION`, duplicate removal | [README](Shop_Items_Above_25/README.md) · [SQL](Shop_Items_Above_25/solution.sql) |
 | Daily and Cumulative Sales by Shipper | Joins, CTE, `GROUP BY`, window `SUM`, `ROUND` | [README](Shipper_Daily_Cumulative_Sales/README.md) · [SQL](Shipper_Daily_Cumulative_Sales/solution.sql) |
+
+## Recent practice
+
+| Problem | Concepts | Files |
+|---|---|---|
+| Apples and Oranges | Self-join, ENUM, subtraction | [README](Apples_and_Oranges/README.md) · [SQL](Apples_and_Oranges/solution.sql) |
+| Big Countries | WHERE, OR, comparisons | [README](Big_Countries/README.md) · [SQL](Big_Countries/solution.sql) |
+| Evaluate Boolean Expressions | Multiple joins, CASE | [README](Evaluate_Boolean_Expressions/README.md) · [SQL](Evaluate_Boolean_Expressions/solution.sql) |
+| Employee Bonus | LEFT JOIN, NULL | [README](../577-employee-bonus/README.md) · [SQL](../577-employee-bonus/employee-bonus.sql) |
+| Insert Data | INSERT INTO, quoted text | [Notes](Insert_Data/README.md) |
 
 ## Folder convention
 
